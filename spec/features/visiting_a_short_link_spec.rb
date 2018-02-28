@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature "Visiting a short link" do
-  let(:long_url) { "http://ryanbigg.com/2016/04/hiring-juniors" }
+  let(:long_url) { "https://ryanbigg.com/2016/04/hiring-juniors" }
 
   scenario "user is redirected to external site", js: true do
     visit "/"
