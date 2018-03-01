@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe LinksController, type: :controller do
   let(:long_url) { "http://google.com" }
+  let(:user) { FactoryBot.create(:user) }
+
   it "can create a link successfully" do
+    sign_in user, scope: :user
     post :create, params: { link: { long_url: long_url } }
     link = Link.find_by(long_url: long_url)
     expect(link).to be_present
