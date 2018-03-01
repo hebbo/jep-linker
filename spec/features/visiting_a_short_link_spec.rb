@@ -2,8 +2,10 @@ require 'rails_helper'
 
 RSpec.feature "Visiting a short link" do
   let(:long_url) { "https://ryanbigg.com/2016/04/hiring-juniors" }
+  let(:user) { FactoryBot.create(:user) }
 
   scenario "user is redirected to external site", js: true do
+    login_as(user, :scope => :user)
     visit "/"
     fill_in "Long URL", with: long_url
     click_button "Shorten"
