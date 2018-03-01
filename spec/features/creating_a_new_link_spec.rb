@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 RSpec.feature "Creating a new link" do
+  let(:user) { FactoryBot.create(:user) }
+
   scenario "successfully creates a new link" do
-    # sign_in @user
+    login_as(user, :scope => :user)
+
     visit "/"
     fill_in "Long URL", with: "http://ryanbigg.com/2016/04/hiring-juniors"
     click_button "Shorten"

@@ -1,5 +1,5 @@
 class LinksController < ApplicationController
-  # before_action :authenticate_user!
+  before_action :authenticate_user!
 
   def new
     @link = Link.new
