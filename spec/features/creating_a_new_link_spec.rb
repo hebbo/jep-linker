@@ -42,4 +42,21 @@ RSpec.feature "Creating a new link" do
     click_button "Shorten"
     expect(page).to have_content("shortening service not allowed in long URL")
   end
+
+  scenario "user is redirected to login screen when not logged in" do
+    visit "/"
+    expect(current_path).to eq("/users/sign_in")
+  end
+
+  scenario "user can sign up" do
+    visit "/"
+    expect(current_path).to eq("/users/sign_in")
+    click_link "Sign up"
+    expect(current_path).to eq("/users/sign_up")
+    fill_in "user_email", with: "test@test.com"
+    fill_in "user_password", with: "mypassword"
+    fill_in "user_password_confirmation", with: "mypassword"
+    click_button "Sign up"
+    expect(current_path).to eq("/")
+  end
 end
