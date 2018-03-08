@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180228221800) do
+ActiveRecord::Schema.define(version: 20180308042025) do
 
   create_table "links", force: :cascade do |t|
     t.string "long_url"
@@ -18,8 +18,10 @@ ActiveRecord::Schema.define(version: 20180228221800) do
     t.datetime "updated_at", null: false
     t.string "short_url"
     t.boolean "is_custom_url", default: false
+    t.integer "user_id"
     t.index ["long_url"], name: "index_links_on_long_url", unique: true
     t.index ["short_url"], name: "index_links_on_short_url", unique: true
+    t.index ["user_id"], name: "index_links_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

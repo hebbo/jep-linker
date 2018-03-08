@@ -6,10 +6,13 @@ RSpec.describe LinksController, type: :controller do
 
 
   context 'when the user is not logged in' do
-    it "unauthenticated sessions wont work" do
+    it "can create a link successfully" do
       post :create, params: { link: { long_url: long_url } }
       link = Link.find_by(long_url: long_url)
-      expect(response.status).to be(302)
+
+      expect(link).to be_present
+      expect(response).to redirect_to(link_path(link))
+      expect(link.user_id).to eq(nil)
     end
   end
 
@@ -20,6 +23,8 @@ RSpec.describe LinksController, type: :controller do
       link = Link.find_by(long_url: long_url)
       expect(link).to be_present
       expect(response).to redirect_to(link_path(link))
+      expect(link.user_id).to eq(user.id)
+      expect(user.links.include?(link)).to be(true)
     end
 
     it "shows a link" do
