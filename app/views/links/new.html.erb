@@ -9,7 +9,7 @@
 
 <hr/>
 
-<% if current_user.links.count > 0 %>
+<% if user_signed_in? && current_user.links.count > 0 %>
 	<table>
 	<% current_user.links.each do |link| %>
 	  <tr>
