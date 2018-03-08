@@ -2,8 +2,9 @@ FactoryBot.define do
   factory :user do
     email 'test@example.com'
     password 'f4k3p455w0rd'
+  end
 
-    # if needed
-    # is_active true
+  factory :link do
+    long_url { "http://host.#{SecureRandom.hex}.com" }
   end
 end
