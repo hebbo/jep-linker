@@ -56,6 +56,11 @@ RSpec.describe Api::LinksController, type: :controller do
         expect(response).to be_ok
         expect(response.body).to eq(expected_links.to_json)
       end
+
+      it 'returns an error when access token is incorrect' do
+        get :index, params: { access_token: 'randomtoken' }
+        expect(response.code).to eq('401')
+      end
     end
   end
 end
