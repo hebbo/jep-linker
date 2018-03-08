@@ -50,15 +50,16 @@ RSpec.describe Api::LinksController, type: :controller do
       it 'returns the user links' do
         user.links << link1
         user.links << link2
-
-        get :index, params: { access_token: user.access_token }
+        request.headers["Authorization"] = "token #{user.access_token}"
+        get :index
 
         expect(response).to be_ok
         expect(response.body).to eq(expected_links.to_json)
       end
 
       it 'returns an error when access token is incorrect' do
-        get :index, params: { access_token: 'randomtoken' }
+        request.headers['Authorization'] = "token randomtoken"
+        get :index
         expect(response.code).to eq('401')
       end
     end
