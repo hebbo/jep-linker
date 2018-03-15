@@ -13,6 +13,8 @@ class Link < ApplicationRecord
             allow_blank: true,
             format: { without: /\Alinks\z/ }
 
+  belongs_to :user, optional: true
+
   private
 
   def build_short_url
