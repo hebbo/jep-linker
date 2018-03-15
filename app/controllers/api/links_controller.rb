@@ -5,11 +5,7 @@ class Api::LinksController < ApplicationController
     if user_signed_in?
       render json: jsonify(Link.where(user_id: current_user.id.to_s))
     else
-      if request.headers['Authorization'].present?
-        render json: {}, status: :unauthorized
-      else
-        render json: jsonify(Link.all)
-      end
+      render json: {}, status: :unauthorized
     end
   end
 

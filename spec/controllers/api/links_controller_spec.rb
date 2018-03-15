@@ -19,12 +19,6 @@ RSpec.describe Api::LinksController, type: :controller do
           },
         ]
       end
-
-      it 'returns all links' do
-        get :index
-        expect(response).to be_ok
-        expect(response.body).to eq(expected_links.to_json)
-      end
     end
 
     context 'token is provided' do
