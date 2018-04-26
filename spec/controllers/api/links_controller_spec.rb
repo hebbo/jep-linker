@@ -3,47 +3,33 @@ require 'rails_helper'
 RSpec.describe Api::LinksController, type: :controller do
   describe '#index' do
     context 'no token provided' do
-      let!(:link1) { FactoryBot.create(:link) }
-      let!(:link2) { FactoryBot.create(:link) }
-      let(:expected_links) do
-        [
-          {
-            'id' => link1.id,
-            'short_url' => link1.short_url,
-            'long_url' => link1.long_url,
-          },
-          {
-            'id' => link2.id,
-            'short_url' => link2.short_url,
-            'long_url' => link2.long_url,
-          },
-        ]
+      it 'returns an error' do
+        get :index
+        expect(response.code).to eq('401')
       end
     end
 
     context 'token is provided' do
       let(:user) { FactoryBot.create(:user) }
-      let!(:link1) { FactoryBot.create(:link) }
-      let!(:link2) { FactoryBot.create(:link) }
+      let!(:link1) { FactoryBot.create(:link, user: user) }
+      let!(:link2) { FactoryBot.create(:link, user: user) }
       let!(:anonymous_link) { FactoryBot.create(:link) }
       let(:expected_links) do
         [
           {
-            'id' => link1.id,
-            'short_url' => link1.short_url,
-            'long_url' => link1.long_url,
+            :id => link1.id,
+            :short_url => link1.short_url,
+            :long_url => link1.long_url,
           },
           {
-            'id' => link2.id,
-            'short_url' => link2.short_url,
-            'long_url' => link2.long_url,
+            :id => link2.id,
+            :short_url => link2.short_url,
+            :long_url => link2.long_url,
           },
         ]
       end
 
       it 'returns the user links' do
-        user.links << link1
-        user.links << link2
         request.headers['HTTP_AUTHORIZATION'] = "token #{user.access_token}"
         get :index
 
@@ -62,19 +48,19 @@ RSpec.describe Api::LinksController, type: :controller do
   describe '#create' do
     let(:post_params) do
       {
-        "link": {
-          "short_url": "abc123", # this field is optional
-          "long_url": "https://google.com"
+        link: {
+          short_url: "abc123", # this field is optional
+          long_url: "https://google.com"
         }
       }
     end
 
     let(:expected_result) do
       {
-        "link": {
-          "id": 1,
-          "short_url": "abc123", # this field is optional
-          "long_url": "https://google.com"
+        link: {
+          id: 1,
+          short_url: "abc123", # this field is optional
+          long_url: "https://google.com"
         }
       }
     end
@@ -95,8 +81,8 @@ RSpec.describe Api::LinksController, type: :controller do
       context 'and no short url is provided' do
         let(:post_params) do
           {
-            "link": {
-              "long_url": "https://google.com"
+            link: {
+              long_url: "https://google.com"
             }
           }
         end
@@ -108,26 +94,13 @@ RSpec.describe Api::LinksController, type: :controller do
           expect(response.code).to eq('200')
           expect(JSON.parse(response.body).dig("link","long_url")).to eq("https://google.com")
         end
-
-        # it 'creates a link twice' do
-        #   request.headers['HTTP_AUTHORIZATION'] = "token #{user.access_token}"
-        #   post :create, params: post_params
-
-        #   expect(response.code).to eq('200')
-        #   expect(JSON.parse(response.body).dig("link","long_url")).to eq("https://google.com")
-
-        #   post :create, params: post_params
-
-        #   expect(response.code).to eq('200')
-        #   expect(JSON.parse(response.body).dig("link","long_url")).to eq("https://google.com")
-        # end
       end
 
       context 'and wrong params are provided' do
         let(:post_params) do
           {
-            "blah": {
-              "foo": "bar"
+            blah: {
+              foo: "bar"
             }
           }
         end

@@ -10,9 +10,9 @@ class User < ApplicationRecord
 
   # If the user has no access_token, generate one.
   def ensure_authentication_token
-    if access_token.blank?
-      self.access_token = generate_access_token
-    end
+    return if self.access_token.present?
+
+    self.access_token = generate_access_token
   end
 
   def token
@@ -28,7 +28,7 @@ class User < ApplicationRecord
   def generate_access_token
     loop do
       token = Devise.friendly_token
-      break token unless User.where(access_token: token).first
+      break token unless User.find_by(access_token: token)
     end
   end
 

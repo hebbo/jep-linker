@@ -9,15 +9,15 @@
 
 <hr/>
 
-<% if user_signed_in? && current_user.links.count > 0 %>
-	<table>
-	<% current_user.links.each do |link| %>
-	  <tr>
-	  	<td><%= link.long_url %></td>
-	  	<td><%= link_to "http://short.ly/#{link.short_url}", "/#{link.short_url}" %></td>
-	  </tr>
-	<% end %>
-	</table>
+<% if user_signed_in? && current_user.links.any? %>
+  <table>
+  <% current_user.links.each do |link| %>
+    <tr>
+      <td><%= link.long_url %></td>
+      <td><%= link_to "http://short.ly/#{link.short_url}", "/#{link.short_url}" %></td>
+    </tr>
+  <% end %>
+  </table>
 <% else %>
   No links yet!
 <% end %>
