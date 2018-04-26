@@ -20,8 +20,8 @@ class Api::LinksController < ApplicationController
     end
 
     if user_signed_in?
-      validation_messages = schema.call(user_params).messages
-      if validation_messages.count == 0
+      schema_validation_result = schema.call(user_params)
+      if schema_validation_result.success?
         @link = Links::Builder.find_or_create(user_params[:link])
         current_user.links << @link
 
@@ -32,7 +32,7 @@ class Api::LinksController < ApplicationController
         end
 
       else
-        render json: validation_messages, status: 500
+        render json: schema_validation_result.messages, status: 500
       end
     else
       render json: {"error" => "Unauthenticated."}, status: :unauthorized
