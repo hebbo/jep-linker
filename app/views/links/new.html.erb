@@ -14,7 +14,7 @@
   <% current_user.links.each do |link| %>
     <tr>
       <td><%= link.long_url %></td>
-      <td><%= link_to "http://short.ly/#{link.short_url}", "/#{link.short_url}" %></td>
+      <td><%= link_to "#{request.base_url}/#{link.short_url}", "/#{link.short_url}" %></td>
     </tr>
   <% end %>
   </table>

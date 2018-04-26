@@ -14,7 +14,7 @@ RSpec.feature "Creating a custom short link" do
     fill_in "Long URL", with: long_url
     fill_in "Custom URL", with: "juniors"
     click_button "Shorten"
-    expect(page).to have_content("Your short url is http://short.ly/#{custom_url}")
+    expect(page).to have_content("Your short url is http://www.example.com/#{custom_url}")
   end
 
   it "shows error if short link already in use" do

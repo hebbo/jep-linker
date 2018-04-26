@@ -13,7 +13,7 @@ RSpec.feature "Creating a new link" do
       fill_in "Long URL", with: "http://ryanbigg.com/2016/04/hiring-juniors"
       click_button "Shorten"
       link = Link.last
-      expect(page).to have_content("Your short url is http://short.ly/#{link.short_url}")
+      expect(page).to have_content("Your short url is http://www.example.com/#{link.short_url}")
     end
 
     scenario "shows error message if no link submitted" do
@@ -50,7 +50,7 @@ RSpec.feature "Creating a new link" do
       fill_in "Long URL", with: "http://ryanbigg.com/2016/04/hiring-juniors"
       click_button "Shorten"
       link = Link.last
-      expect(page).to have_content("Your short url is http://short.ly/#{link.short_url}")
+      expect(page).to have_content("Your short url is http://www.example.com/#{link.short_url}")
     end
   end
 end
