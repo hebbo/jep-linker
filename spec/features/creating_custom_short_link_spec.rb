@@ -6,7 +6,7 @@ RSpec.feature "Creating a custom short link" do
   let(:custom_url) { "juniors" }
 
   before do
-    login_as(user, :scope => :user)
+    login_as(user)
   end
 
   it "successfully creates custom short link" do
