@@ -6,7 +6,7 @@ class Api::LinksController < ApplicationController
     if user_signed_in?
       render json: jsonify(current_user.links)
     else
-      render json: {}, status: :unauthorized
+      render json: {"error" => "Unauthenticated."}, status: :unauthorized
     end
   end
 
@@ -35,18 +35,18 @@ class Api::LinksController < ApplicationController
         render json: validation_messages, status: 500
       end
     else
-      render json: {}, status: :unauthorized
+      render json: {"error" => "Unauthenticated."}, status: :unauthorized
     end
   end
 
   private
 
   def jsonify(links)
-    links.map { |link| { id: link.id.to_s, short_url: link.short_url, long_url: link.long_url} }
+    links.map { |link| { id: link.id, short_url: link.short_url, long_url: link.long_url} }
   end
 
   def authenticate_user_from_token!
-    token = request.headers['Authorization']&.split(" ")&.last
+    token = request.headers['HTTP_AUTHORIZATION']&.split(" ")&.last
     return if token.blank?
 
     user = User.find_by(access_token: token)

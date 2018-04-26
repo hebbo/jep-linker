@@ -15,6 +15,14 @@ class User < ApplicationRecord
     end
   end
 
+  def token
+    self.access_token
+  end
+
+  def token=(str)
+    self.access_token = str
+  end
+
   private
 
   def generate_access_token

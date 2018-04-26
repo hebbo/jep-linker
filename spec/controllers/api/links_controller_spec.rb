@@ -8,12 +8,12 @@ RSpec.describe Api::LinksController, type: :controller do
       let(:expected_links) do
         [
           {
-            'id' => link1.id.to_s,
+            'id' => link1.id,
             'short_url' => link1.short_url,
             'long_url' => link1.long_url,
           },
           {
-            'id' => link2.id.to_s,
+            'id' => link2.id,
             'short_url' => link2.short_url,
             'long_url' => link2.long_url,
           },
@@ -29,12 +29,12 @@ RSpec.describe Api::LinksController, type: :controller do
       let(:expected_links) do
         [
           {
-            'id' => link1.id.to_s,
+            'id' => link1.id,
             'short_url' => link1.short_url,
             'long_url' => link1.long_url,
           },
           {
-            'id' => link2.id.to_s,
+            'id' => link2.id,
             'short_url' => link2.short_url,
             'long_url' => link2.long_url,
           },
@@ -44,7 +44,7 @@ RSpec.describe Api::LinksController, type: :controller do
       it 'returns the user links' do
         user.links << link1
         user.links << link2
-        request.headers["Authorization"] = "token #{user.access_token}"
+        request.headers['HTTP_AUTHORIZATION'] = "token #{user.access_token}"
         get :index
 
         expect(response).to be_ok
@@ -52,7 +52,7 @@ RSpec.describe Api::LinksController, type: :controller do
       end
 
       it 'returns an error when access token is incorrect' do
-        request.headers['Authorization'] = "token randomtoken"
+        request.headers['HTTP_AUTHORIZATION'] = "token randomtoken"
         get :index
         expect(response.code).to eq('401')
       end
@@ -72,7 +72,7 @@ RSpec.describe Api::LinksController, type: :controller do
     let(:expected_result) do
       {
         "link": {
-          "id": "1",
+          "id": 1,
           "short_url": "abc123", # this field is optional
           "long_url": "https://google.com"
         }
@@ -84,7 +84,7 @@ RSpec.describe Api::LinksController, type: :controller do
 
       context 'and short url is provided' do
         it 'creates a link' do
-          request.headers["Authorization"] = "token #{user.access_token}"
+          request.headers['HTTP_AUTHORIZATION'] = "token #{user.access_token}"
           post :create, params: post_params
 
           expect(response.code).to eq('200')
@@ -102,7 +102,7 @@ RSpec.describe Api::LinksController, type: :controller do
         end
 
         it 'creates a link' do
-          request.headers["Authorization"] = "token #{user.access_token}"
+          request.headers['HTTP_AUTHORIZATION'] = "token #{user.access_token}"
           post :create, params: post_params
 
           expect(response.code).to eq('200')
@@ -110,7 +110,7 @@ RSpec.describe Api::LinksController, type: :controller do
         end
 
         # it 'creates a link twice' do
-        #   request.headers["Authorization"] = "token #{user.access_token}"
+        #   request.headers['HTTP_AUTHORIZATION'] = "token #{user.access_token}"
         #   post :create, params: post_params
 
         #   expect(response.code).to eq('200')
@@ -133,7 +133,7 @@ RSpec.describe Api::LinksController, type: :controller do
         end
 
         it 'returns a 500' do
-          request.headers["Authorization"] = "token #{user.access_token}"
+          request.headers['HTTP_AUTHORIZATION'] = "token #{user.access_token}"
           post :create, params: post_params
 
           expect(response.code).to eq('500')
@@ -144,7 +144,7 @@ RSpec.describe Api::LinksController, type: :controller do
 
     context 'when a token is wrong' do
       it 'returns an error' do
-        request.headers['Authorization'] = "token randomtoken"
+        request.headers['HTTP_AUTHORIZATION'] = "token randomtoken"
         post :create, params: post_params
         expect(response.code).to eq('401')
       end
