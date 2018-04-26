@@ -6,32 +6,3 @@
   <%= f.text_field :short_url %>
   <%= f.submit "Shorten" %>
 <% end %>
-
-<hr/>
-
-<% if user_signed_in? && current_user.links.any? %>
-  <table>
-  <% current_user.links.each do |link| %>
-    <tr>
-      <td><%= link.long_url %></td>
-      <td><%= link_to "#{request.base_url}/#{link.short_url}", "/#{link.short_url}" %></td>
-    </tr>
-  <% end %>
-  </table>
-<% else %>
-  No links yet!
-<% end %>
-
-<hr/>
-
-<% if user_signed_in? %>
-  <li>
-  <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
-  </li>
-<% else %>
-  <li>
-  <%= link_to "Sign up", new_user_registration_path %>
-  <%= link_to "Sign in", new_user_session_path %>
-  </li>
-<% end %>
-
