@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
+  root 'links#new'
+
   namespace :api do
     get '/links', to: 'links#index'
     post '/links', to: 'links#create'
   end
 
   devise_for :users
-  root 'links#new'
-  resources :links
+
+  resources :links, only: [:new, :create, :show]
   get '/:short_url', to: 'links#forward'
 end
