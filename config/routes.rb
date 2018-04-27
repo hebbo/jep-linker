@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root 'links#new'
 
-  namespace :api do
+  namespace :api, defaults: {format: :json} do
     get '/links', to: 'links#index'
     post '/links', to: 'links#create'
   end

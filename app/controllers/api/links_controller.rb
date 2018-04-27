@@ -4,7 +4,7 @@ class Api::LinksController < ApplicationController
 
   def index
     if user_signed_in?
-      render json: jsonify(current_user.links)
+      @links = current_user.links
     else
       render json: {"error" => "Unauthenticated."}, status: :unauthorized
     end
@@ -26,7 +26,7 @@ class Api::LinksController < ApplicationController
         current_user.links << @link
 
         if @link.valid?
-          render json: { link: jsonify([@link]).first }
+          render :show
         else
           render json: {}, status: 500
         end
