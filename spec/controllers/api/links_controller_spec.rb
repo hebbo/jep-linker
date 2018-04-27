@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Api::LinksController, type: :controller do
+  render_views
+
   describe '#index' do
     context 'no token provided' do
       it 'returns an error' do
@@ -31,7 +33,7 @@ RSpec.describe Api::LinksController, type: :controller do
 
       it 'returns the user links' do
         request.headers['HTTP_AUTHORIZATION'] = "token #{user.access_token}"
-        get :index
+        get :index, params: { format: 'json' }
 
         expect(response).to be_ok
         expect(response.body).to eq(expected_links.to_json)
@@ -39,7 +41,7 @@ RSpec.describe Api::LinksController, type: :controller do
 
       it 'returns an error when access token is incorrect' do
         request.headers['HTTP_AUTHORIZATION'] = "token randomtoken"
-        get :index
+        get :index, params: { format: 'json' }
         expect(response.code).to eq('401')
       end
     end
@@ -51,7 +53,8 @@ RSpec.describe Api::LinksController, type: :controller do
         link: {
           short_url: "abc123", # this field is optional
           long_url: "https://google.com"
-        }
+        },
+        format: 'json'
       }
     end
 
@@ -83,7 +86,8 @@ RSpec.describe Api::LinksController, type: :controller do
           {
             link: {
               long_url: "https://google.com"
-            }
+            },
+            format: 'json'
           }
         end
 
@@ -101,7 +105,8 @@ RSpec.describe Api::LinksController, type: :controller do
           {
             blah: {
               foo: "bar"
-            }
+            },
+            format: 'json'
           }
         end
 
